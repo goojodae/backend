@@ -3,6 +3,8 @@ package com.posetive.api.service;
 import com.posetive.api.repository.GenerationRepository;
 import com.posetive.api.repository.UserRepository;
 import com.posetive.dto.request.generation.PgpgGenerationReq;
+import com.posetive.dto.response.generation.MyGenerationListItem;
+import com.posetive.dto.response.generation.MyGenerationListRes;
 import com.posetive.dto.response.generation.PgpgGenerationRes;
 import com.posetive.entity.Generation;
 import com.posetive.entity.GenerationModel;
@@ -12,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Transactional
@@ -43,5 +47,25 @@ public class GenerationService {
                 .build();
 
         return pgpgGenerationRes;
+    }
+
+    public MyGenerationListRes getMyGenerationList(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        List<MyGenerationListItem> myGenerationList = new ArrayList<>();
+        for (Generation generation : user.getGenerations()) {
+            MyGenerationListItem myGenerationListItem = MyGenerationListItem.builder()
+                    .conditionImageUrl(generation.getConditionalImageUrl())
+                    .targetImageUrl(generation.getTargetImageUrl())
+                    .resultImgageUrl(generation.getResultImageUrl())
+                    .generationModel(generation.getGenerationModel().toString().toLowerCase())
+                    .build();
+            myGenerationList.add(myGenerationListItem);
+        }
+
+        MyGenerationListRes myGenerationListRes = MyGenerationListRes.builder()
+                .generations(myGenerationList)
+                .build();
+
+        return myGenerationListRes;
     }
 }
