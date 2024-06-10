@@ -11,7 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @RestController
@@ -48,5 +50,15 @@ public class AuthController {
             }
         }
         return ResponseEntity.ok().body(new ApiResponse(400, "아이디 또는 비밀번호가 올바르지 않습니다", null));
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<ApiResponse> logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+        String bearer = request.getHeader("Authorization");
+        if (bearer == null || "".equals(bearer)) {
+            return ResponseEntity.status(401).body(null);
+        }
+        authService.logoutUser(request, response, session);
+        return ResponseEntity.ok().body(new ApiResponse<>(200, "로그아웃 성공", null));
     }
 }

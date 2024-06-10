@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -71,5 +73,21 @@ public class AuthService {
 
     public Boolean checkPassword(String password, String userPassword) {
         return passwordEncoder.matches(password, userPassword);
+    }
+
+    public void logoutUser(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+//            Cookie accessCookie = new Cookie("accessToken", null);
+//            accessCookie.setMaxAge(0);
+//            accessCookie.setPath("/");
+//            response.addCookie(accessCookie);
+
+            Cookie refreshCookie = new Cookie("refreshToken", null);
+            refreshCookie.setMaxAge(0);
+            refreshCookie.setPath("/");
+            response.addCookie(refreshCookie);
+        }
+        session.invalidate();
     }
 }
