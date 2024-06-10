@@ -20,6 +20,6 @@ public class UserController {
     public ResponseEntity<ApiResponse> withdraw() {
         Long userId = jwtUtil.getUserId();
         userService.withdrawUser(userId);
-        return ResponseEntity.ok().body(new ApiResponse<>(200, "회원 탈퇴 완료", null));
+        return ResponseEntity.ok().body(new ApiResponse<>(200, "회원 탈퇴 성공", null));
     }
 }
