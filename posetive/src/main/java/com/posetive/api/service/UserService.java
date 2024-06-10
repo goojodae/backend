@@ -2,6 +2,7 @@ package com.posetive.api.service;
 
 import com.posetive.api.repository.UserRepository;
 import com.posetive.entity.User;
+import com.posetive.entity.UserStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,4 +18,11 @@ public class UserService {
     public Boolean existsByLoginId(String loginId) { return userRepository.existsByLoginId(loginId); }
 
     public User findByLoginId(String loginId) { return userRepository.findByLoginId(loginId); }
+
+    public void withdrawUser(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        user.setLoginId("deleted");
+        user.setNickName("deleted");
+        user.setUserStatus(UserStatus.WITHDRAWN);
+    }
 }
