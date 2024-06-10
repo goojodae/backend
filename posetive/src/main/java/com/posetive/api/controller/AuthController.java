@@ -61,4 +61,10 @@ public class AuthController {
         authService.logoutUser(request, response, session);
         return ResponseEntity.ok().body(new ApiResponse<>(200, "로그아웃 성공", null));
     }
+
+    @PostMapping("/force-logout")
+    public ResponseEntity<ApiResponse> forceLogout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+        authService.logoutUser(request, response, session);
+        return ResponseEntity.ok().body(new ApiResponse<>(200, "강제 로그아웃 성공", null));
+    }
 }
