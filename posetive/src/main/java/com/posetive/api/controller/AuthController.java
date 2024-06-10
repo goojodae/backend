@@ -2,6 +2,7 @@ package com.posetive.api.controller;
 
 import com.posetive.api.service.AuthService;
 import com.posetive.api.service.UserService;
+import com.posetive.dto.request.auth.LoginReq;
 import com.posetive.dto.response.ApiResponse;
 import com.posetive.dto.request.auth.RegisterUserReq;
 import com.posetive.entity.User;
@@ -34,4 +35,18 @@ public class AuthController {
         return ResponseEntity.ok().body(new ApiResponse(201, "유저 생성 완료", authService.getUserLoginInfo(user.getId(), accessToken, user.getIsSubscribed())));
     }
 
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse> login(@RequestBody LoginReq loginReq, HttpServletResponse response) throws IOException {
+        String loginId = loginReq.getLoginId();
+        String password = loginReq.getPassword();
+        if (userService.existsByLoginId(loginId)) {
+            User user = userService.findByLoginId(loginId);
+
+            if (authService.checkPassword(password, user.getPassword())) {
+                String accessToken = authService.loginUser(loginId, response);
+                return ResponseEntity.ok().body(new ApiResponse(200, "로그인 완료", authService.getUserLoginInfo(user.getId(), accessToken, user.getIsSubscribed())));
+            }
+        }
+        return ResponseEntity.ok().body(new ApiResponse(400, "아이디 또는 비밀번호가 올바르지 않습니다", null));
+    }
 }

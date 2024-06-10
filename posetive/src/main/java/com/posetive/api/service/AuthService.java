@@ -69,4 +69,7 @@ public class AuthService {
         return loginInfoRes;
     }
 
+    public Boolean checkPassword(String password, String userPassword) {
+        return passwordEncoder.matches(password, userPassword);
+    }
 }
