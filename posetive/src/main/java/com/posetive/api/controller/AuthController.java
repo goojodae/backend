@@ -34,7 +34,7 @@ public class AuthController {
         authService.registerUser(registerUserReq);
         User user = userService.findByLoginId(loginId);
         String accessToken = authService.loginUser(loginId, response);
-        return ResponseEntity.ok().body(new ApiResponse(201, "유저 생성 완료", authService.getUserLoginInfo(user.getId(), accessToken, user.getIsSubscribed())));
+        return ResponseEntity.ok().body(new ApiResponse(201, "유저 생성 성공", authService.getUserLoginInfo(user.getId(), accessToken, user.getIsSubscribed())));
     }
 
     @PostMapping("/login")
@@ -46,7 +46,7 @@ public class AuthController {
 
             if (authService.checkPassword(password, user.getPassword())) {
                 String accessToken = authService.loginUser(loginId, response);
-                return ResponseEntity.ok().body(new ApiResponse(200, "로그인 완료", authService.getUserLoginInfo(user.getId(), accessToken, user.getIsSubscribed())));
+                return ResponseEntity.ok().body(new ApiResponse(200, "로그인 성공", authService.getUserLoginInfo(user.getId(), accessToken, user.getIsSubscribed())));
             }
         }
         return ResponseEntity.ok().body(new ApiResponse(400, "아이디 또는 비밀번호가 올바르지 않습니다", null));
