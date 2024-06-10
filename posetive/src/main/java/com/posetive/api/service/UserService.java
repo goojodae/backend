@@ -1,6 +1,7 @@
 package com.posetive.api.service;
 
 import com.posetive.api.repository.UserRepository;
+import com.posetive.dto.request.user.ResetNickNameReq;
 import com.posetive.dto.request.user.ResetPasswordReq;
 import com.posetive.entity.User;
 import com.posetive.entity.UserStatus;
@@ -30,5 +31,12 @@ public class UserService {
     public void resetPassword(ResetPasswordReq resetPasswordReq) {
         User user = userRepository.findByLoginId(resetPasswordReq.getLoginId());
         user.setPassword(passwordEncoder.encode(resetPasswordReq.getPassword()));
+    }
+
+    public Boolean existsByNickName(String nickName) { return userRepository.existsByNickName(nickName);}
+
+    public void resetNickName(ResetNickNameReq resetNickNameReq, Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        user.setNickName(resetNickNameReq.getNickName());
     }
 }
