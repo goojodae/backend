@@ -55,6 +55,7 @@ public class GenerationService {
         List<MyGenerationListItem> myGenerationList = new ArrayList<>();
         for (Generation generation : user.getGenerations()) {
             MyGenerationListItem myGenerationListItem = MyGenerationListItem.builder()
+                    .generationId(generation.getId())
                     .conditionImageUrl(generation.getConditionalImageUrl())
                     .targetImageUrl(generation.getTargetImageUrl())
                     .resultImgageUrl(generation.getResultImageUrl())

@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class MyGenerationListItem {
+    private Long generationId;
     private String conditionImageUrl;
     private String targetImageUrl;
     private String resultImgageUrl;
