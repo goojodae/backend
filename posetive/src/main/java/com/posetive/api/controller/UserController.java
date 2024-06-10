@@ -1,11 +1,13 @@
 package com.posetive.api.controller;
 
 import com.posetive.api.service.UserService;
+import com.posetive.dto.request.user.ResetPasswordReq;
 import com.posetive.dto.response.ApiResponse;
 import com.posetive.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +23,11 @@ public class UserController {
         Long userId = jwtUtil.getUserId();
         userService.withdrawUser(userId);
         return ResponseEntity.ok().body(new ApiResponse<>(200, "회원 탈퇴 성공", null));
+    }
+
+    @PutMapping("/reset-pw")
+    public ResponseEntity<ApiResponse> resetPassword(@RequestBody ResetPasswordReq resetPasswordReq) {
+        userService.resetPassword(resetPasswordReq);
+        return ResponseEntity.ok().body(new ApiResponse(206, "비밀 번호 변경 성공", null));
     }
 }

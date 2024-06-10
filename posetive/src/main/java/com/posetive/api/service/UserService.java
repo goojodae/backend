@@ -1,6 +1,7 @@
 package com.posetive.api.service;
 
 import com.posetive.api.repository.UserRepository;
+import com.posetive.dto.request.user.ResetPasswordReq;
 import com.posetive.entity.User;
 import com.posetive.entity.UserStatus;
 import lombok.RequiredArgsConstructor;
@@ -24,5 +25,10 @@ public class UserService {
         user.setLoginId("deleted");
         user.setNickName("deleted");
         user.setUserStatus(UserStatus.WITHDRAWN);
+    }
+
+    public void resetPassword(ResetPasswordReq resetPasswordReq) {
+        User user = userRepository.findByLoginId(resetPasswordReq.getLoginId());
+        user.setPassword(passwordEncoder.encode(resetPasswordReq.getPassword()));
     }
 }
