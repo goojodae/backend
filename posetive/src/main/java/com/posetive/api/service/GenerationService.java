@@ -2,7 +2,6 @@ package com.posetive.api.service;
 
 import com.posetive.api.repository.GenerationRepository;
 import com.posetive.api.repository.UserRepository;
-import com.posetive.dto.request.generation.PgpgGenerationReq;
 import com.posetive.dto.response.generation.MyGenerationDetailRes;
 import com.posetive.dto.response.generation.MyGenerationListItem;
 import com.posetive.dto.response.generation.MyGenerationListRes;
@@ -10,9 +9,11 @@ import com.posetive.dto.response.generation.PgpgGenerationRes;
 import com.posetive.entity.Generation;
 import com.posetive.entity.GenerationModel;
 import com.posetive.entity.User;
+import com.posetive.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -25,10 +26,11 @@ public class GenerationService {
 
     private final GenerationRepository generationRepository;
     private final UserRepository userRepository;
+    private final S3Util s3Util;
 
-    public PgpgGenerationRes pgpgGeneration(PgpgGenerationReq pgpgGenerationReq, Long userId) {
-        String conditionImageUrl  = pgpgGenerationReq.getConditionImageUrl();
-        String targetImageUrl = pgpgGenerationReq.getTargetImageUrl();
+    public PgpgGenerationRes pgpgGeneration(MultipartFile conditionImage, MultipartFile targetImage, Long userId) {
+        String conditionImageUrl = s3Util.uploadFile(conditionImage);
+        String targetImageUrl = s3Util.uploadFile(targetImage);
 
         String resultImageUrl = "http://via.placeholder.com/640x480";
 
