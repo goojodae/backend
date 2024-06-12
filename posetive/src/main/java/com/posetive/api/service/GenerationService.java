@@ -46,7 +46,7 @@ public class GenerationService {
         generationRepository.save(generation);
 
         PgpgGenerationRes pgpgGenerationRes = PgpgGenerationRes.builder()
-                .resultImgageUrl(resultImageUrl)
+                .resultImageUrl(resultImageUrl)
                 .build();
 
         return pgpgGenerationRes;
@@ -60,7 +60,7 @@ public class GenerationService {
                     .generationId(generation.getId())
                     .conditionImageUrl(generation.getConditionalImageUrl())
                     .targetImageUrl(generation.getTargetImageUrl())
-                    .resultImgageUrl(generation.getResultImageUrl())
+                    .resultImageUrl(generation.getResultImageUrl())
                     .generationModel(generation.getGenerationModel().toString().toLowerCase())
                     .build();
             myGenerationList.add(myGenerationListItem);
@@ -93,7 +93,7 @@ public class GenerationService {
         MyGenerationDetailRes myGenerationDetailRes = MyGenerationDetailRes.builder()
                 .conditionImageUrl(generation.getConditionalImageUrl())
                 .targetImageUrl(generation.getTargetImageUrl())
-                .resultImgageUrl(generation.getResultImageUrl())
+                .resultImageUrl(generation.getResultImageUrl())
                 .generationModel(generation.getGenerationModel().toString().toLowerCase())
                 .build();
 

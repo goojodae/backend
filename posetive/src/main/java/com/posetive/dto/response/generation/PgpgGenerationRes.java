@@ -6,5 +6,5 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PgpgGenerationRes {
-    private String resultImgageUrl;
+    private String resultImageUrl;
 }
