@@ -8,6 +8,6 @@ import lombok.Getter;
 public class MyGenerationDetailRes {
     private String conditionImageUrl;
     private String targetImageUrl;
-    private String resultImgageUrl;
+    private String resultImageUrl;
     private String generationModel;
 }
