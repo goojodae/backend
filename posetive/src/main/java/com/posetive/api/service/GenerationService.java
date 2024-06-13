@@ -32,7 +32,7 @@ public class GenerationService {
         String conditionImageUrl = s3Util.uploadFile(conditionImage);
         String targetImageUrl = s3Util.uploadFile(targetImage);
 
-        String resultImageUrl = "http://via.placeholder.com/640x480";
+        String resultImageUrl = "https://via.placeholder.com/640x480";
 
         User user = userRepository.findById(userId).orElse(null);
         Generation generation = Generation.builder()
