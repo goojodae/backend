@@ -2,6 +2,7 @@ package com.posetive.api.controller;
 
 import com.posetive.dto.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,9 +18,11 @@ import java.net.URL;
 @RequiredArgsConstructor
 @RequestMapping("/test")
 public class TestController {
+    @Value("${inference-server-public-ip}")
+    private String inferenceServerPublicIp;
     @GetMapping()
     public ResponseEntity<ApiResponse> test() throws IOException {
-        URL url = new URL("http://192.168.0.132:5001/hello");
+        URL url = new URL(inferenceServerPublicIp +"/hello");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
         conn.setRequestMethod("GET");
 
