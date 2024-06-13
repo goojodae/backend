@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -20,11 +18,29 @@ import java.net.URL;
 public class TestController {
     @Value("${inference-server-public-ip}")
     private String inferenceServerPublicIp;
+
     @GetMapping()
     public ResponseEntity<ApiResponse> test() throws IOException {
         URL url = new URL(inferenceServerPublicIp +"/hello");
         HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
+        conn.setRequestMethod("POST");
+        conn.setRequestProperty("Content-Type", "application/json; utf-8");
+        conn.setRequestProperty("Accept", "application/json");
+        conn.setDoOutput(true);
+
+        String url_1 = "https://posetive-bucket.s3.ap-northeast-2.amazonaws.com/7192243e-5564-4b97-bab7-30dc50daaf30_karina.jpg";
+        String url_2 = "https://posetive-bucket.s3.ap-northeast-2.amazonaws.com/200ae60c-6dcc-4663-a109-815d3c0fd4c7_test.webp";
+
+        String requestBody = "{"
+                + "\"generationId\": 3,"
+                + "\"conditionImageUrl\": \""+url_1+"\","
+                + "\"targetImageUrl\": \""+url_2+"\""
+                + "}";
+
+        try (OutputStream os = conn.getOutputStream()) {
+            byte[] input = requestBody.getBytes("utf-8");
+            os.write(input, 0, input.length);
+        }
 
         BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
         String inputLine;

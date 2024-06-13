@@ -9,12 +9,14 @@ import com.posetive.dto.response.generation.PgpgGenerationRes;
 import com.posetive.entity.Generation;
 import com.posetive.entity.GenerationModel;
 import com.posetive.entity.User;
+import com.posetive.util.GenerationUtil;
 import com.posetive.util.S3Util;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +29,13 @@ public class GenerationService {
     private final GenerationRepository generationRepository;
     private final UserRepository userRepository;
     private final S3Util s3Util;
+    private final GenerationUtil generationUtil;
 
-    public PgpgGenerationRes pgpgGeneration(MultipartFile conditionImage, MultipartFile targetImage, Long userId) {
+    public PgpgGenerationRes pgpgGeneration(MultipartFile conditionImage, MultipartFile targetImage, Long userId) throws IOException {
         String conditionImageUrl = s3Util.uploadFile(conditionImage);
         String targetImageUrl = s3Util.uploadFile(targetImage);
-
-        String resultImageUrl = "https://via.placeholder.com/640x480";
+        Long generationId = generationRepository.count()+1L;
+        String resultImageUrl = generationUtil.pgpgInference(generationId, conditionImageUrl, targetImageUrl);
 
         User user = userRepository.findById(userId).orElse(null);
         Generation generation = Generation.builder()
