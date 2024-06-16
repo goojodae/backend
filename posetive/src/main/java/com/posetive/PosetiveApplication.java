@@ -6,7 +6,13 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
-@SpringBootApplication
+@SpringBootApplication(
+        exclude = {
+            org.springframework.cloud.aws.autoconfigure.context.ContextInstanceDataAutoConfiguration.class,
+            org.springframework.cloud.aws.autoconfigure.context.ContextStackAutoConfiguration.class,
+            org.springframework.cloud.aws.autoconfigure.context.ContextRegionProviderAutoConfiguration.class
+        }
+)
 public class PosetiveApplication {
     @PostConstruct
     public void started() {
@@ -16,5 +22,4 @@ public class PosetiveApplication {
     public static void main(String[] args) {
         SpringApplication.run(PosetiveApplication.class, args);
     }
-
 }
