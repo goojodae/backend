@@ -31,7 +31,8 @@ public class WebMvcConfig implements WebMvcConfigurer {
             "/auth/signup",
             "/auth/login",
             "/auth/force-logout",
-            "/user/reset-pw"
+            "/user/reset-pw",
+            "/test"
     };
 
     @Override

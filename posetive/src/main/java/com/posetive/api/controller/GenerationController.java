@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/generation")
@@ -16,7 +18,7 @@ public class GenerationController {
     private final JwtUtil jwtUtil;
 
     @PostMapping("/pgpg")
-    public ResponseEntity<ApiResponse> pgpgGeneration(@RequestParam("conditionImage") MultipartFile conditionImage, @RequestParam("targetImage") MultipartFile targetImage) {
+    public ResponseEntity<ApiResponse> pgpgGeneration(@RequestParam("conditionImage") MultipartFile conditionImage, @RequestParam("targetImage") MultipartFile targetImage) throws IOException {
         Long userId = jwtUtil.getUserId();
         return ResponseEntity.ok().body(new ApiResponse<>(201, "PG2 이미지 생성 인퍼런스 성공", generationService.pgpgGeneration(conditionImage, targetImage, userId)));
     }
